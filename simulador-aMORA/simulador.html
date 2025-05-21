@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Simulador de entrada para imóvel</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 5px;
+        }
+        .fundo{
+            margin: 0;
+            height: 100vh;
+            background-image: url('https://i.postimg.cc/DyvGTrXK/Design-sem-nome.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        h1{
+            font-size: 55px;
+            color: #0D2C54;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align:center;
+        }
+        .perguntas{
+            position: absolute;
+            background-color: rgba(13, 44, 84, 0.9);
+            font-size: 30px;
+            color: white;
+            top: 50%;
+            left: 30%;
+            transform: translate(-50%, -50%);
+            border-radius: 15px;
+            padding: 30px;
+        }
+        .resultado{
+            position: absolute;
+            background-color: rgba(13, 44, 84, 0.9);
+            font-size: 30px;
+            color: white;
+            top: 50%;
+            right: 10%;
+            transform: translate(-50%, -50%);
+            border-radius: 15px;
+            padding: 30px;
+            display: none;
+        }
+        button {
+  background-color: #0D2C54;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #144A96;
+}
+
+    </style>
+</head>
+<body>
+    <div class="fundo">
+        <h1>Simulador</h1>
+        <div class="perguntas">
+            <label for="valorImovel">Valor do imóvel (R$):</label><br />
+            <input type="number" id="valorImovel" name="valorImovel" /><br /><br />
+
+            <label for="entrada">Percentual (%) da entrada:</label><br />
+            <input type="number" id="entrada" name="entrada" /><br /><br />
+
+            <label for="prazo">Duração do contrato (Anos):</label><br />
+            <input type="number" id="prazo" name="prazo" /><br /><br />
+
+            <label for="juros">Taxa de juros anual (%):</label><br />
+            <input type="number" id="juros" name="juros" /><br /><br />
+            
+            <button type="button" onclick="simular()">Simular</button>
+        </div>
+
+        <div class="resultado" id="resultado"></div>
+
+    </div>
+    <script>
+        function simular() {
+            let valor = Number(document.getElementById("valorImovel").value);
+            let entradaPerc = Number(document.getElementById("entrada").value);
+            let anos = Number(document.getElementById("prazo").value);
+            let juros = Number(document.getElementById("juros").value);
+
+            let entrada = valor * (entradaPerc / 100);
+            let guardar = valor * 0.15;
+            let mensal = guardar / (anos * 12);
+
+            let resultado = "";
+            resultado += "<p><strong>Valor da entrada:</strong> R$ " + entrada.toFixed(2) + "</p>";
+            resultado += "<p><strong>Valor a guardar:</strong> R$ " + guardar.toFixed(2) + "</p>";
+            resultado += "<p><strong>Parcela mensal base:</strong> R$ " + mensal.toFixed(2) + "</p>";
+
+            resultado += "<p><strong>Parcelas com IGPM (6%):</strong></p><ul>";
+            for (let i = 1; i <= anos; i++) {
+                let igpm = mensal * (1.06 ** (i - 1));
+                resultado += "<li>Ano " + i + ": R$ " + igpm.toFixed(2) + "</li>";
+            }
+            resultado += "</ul>";
+
+            resultado += "<p><strong>Parcelas com juros (" + juros + "%):</strong></p><ul>";
+            for (let i = 1; i <= anos; i++) {
+                let comp = mensal * ((1 + juros / 100) ** (i - 1));
+                resultado += "<li>Ano " + i + ": R$ " + comp.toFixed(2) + "</li>";
+            }
+            resultado += "</ul>";
+
+            const resultadoDiv = document.getElementById("resultado");
+            resultadoDiv.innerHTML = resultado;
+            resultadoDiv.style.display = "block";
+        }
+    </script>
+</body>
+</html>
