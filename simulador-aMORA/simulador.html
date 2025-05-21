@@ -47,17 +47,25 @@
             display: none;
         }
         button {
-  background-color: #0D2C54;
-  color: white;
-  border: none;
-  padding: 15px 30px;
-  cursor: pointer;
-}
+            background-color: #0D2C54;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #144A96;
+        }
+        ul.seta {
+            list-style: none;
+            padding-left: 0;
+        }
 
-button:hover {
-  background-color: #144A96;
-}
-
+        ul.seta li::before {
+            content: "► ";
+            color: #FFD700;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -79,8 +87,7 @@ button:hover {
             <button type="button" onclick="simular()">Simular</button>
         </div>
 
-        <div class="resultado" id="resultado"></div>
-
+        <div class="resultado" id="resultado"></div
     </div>
     <script>
         function simular() {
@@ -94,29 +101,23 @@ button:hover {
             let mensal = guardar / (anos * 12);
 
             let resultado = "";
-            resultado += "<p><strong>Valor da entrada:</strong> R$ " + entrada.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })
- + "</p>";
-            resultado += "<p><strong>Valor a guardar:</strong> R$ " + guardar.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })
- + "</p>";
-            resultado += "<p><strong>Parcela mensal base:</strong> R$ " + mensal.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })
- + "</p>";
+            resultado += "<p><strong>Valor da entrada:</strong> R$ " + entrada.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + "</p>";
+            resultado += "<p><strong>Valor a guardar:</strong> R$ " + guardar.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + "</p>";
+            resultado += "<p><strong>Parcela mensal base:</strong> R$ " + mensal.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + "</p>";
 
-            resultado += "<p><strong>Parcelas com IGPM (6%):</strong></p><ul>";
+            resultado += "<p><strong>Parcelas com IGPM (6%):</strong></p><ul class='seta'>";
             for (let i = 1; i <= anos; i++) {
                 let igpm = mensal * (1.06 ** (i - 1));
-                resultado += "<li>Ano " + i + ": R$ " + igpm.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })
- + "</li>";
+                resultado += "<li>Ano " + i + ": R$ " + igpm.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + "</li>";
             }
             resultado += "</ul>";
 
-            resultado += "<p><strong>Parcelas com juros (" + juros + "%):</strong></p><ul>";
+            resultado += "<p><strong>Parcelas com juros (" + juros + "%):</strong></p><ul class='seta'>";
             for (let i = 1; i <= anos; i++) {
                 let comp = mensal * ((1 + juros / 100) ** (i - 1));
-                resultado += "<li>Ano " + i + ": R$ " + comp.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })
- + "</li>";
+                resultado += "<li>Ano " + i + ": R$ " + comp.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + "</li>";
             }
             resultado += "</ul>";
-
             const resultadoDiv = document.getElementById("resultado");
             resultadoDiv.innerHTML = resultado;
             resultadoDiv.style.display = "block";
